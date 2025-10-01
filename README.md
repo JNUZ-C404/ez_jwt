@@ -13,3 +13,6 @@
 ## 题目解析
 
 注册用户并登录后抓包修改JWT中的alg参数为none,role参数为admin后，查看admin用户信息即可得到flag
+
+## 题目部署
+进入build文件夹，使用docker build -t <镜像名> . 部署
