@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工列表 - 企业管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .employees-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #2c3e50;
+            color: white;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .role-admin {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .role-manager {
+            background: #f39c12;
+            color: white;
+        }
+
+        .role-user {
+            background: #3498db;
+            color: white;
+        }
+
+        .role-guest {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .view-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-btn:hover {
+            background: #229954;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">企业管理系统</div>
+            <div class="nav-links">
+                <span>{{ user.username }} ({{ user.role }})</span>
+                <a href="/dashboard" class="nav-btn">返回主页</a>
+                <a href="/logout" class="logout-btn">退出</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>👥 员工管理系统</h1>
+            <p>管理员专用 - 查看所有员工信息</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>{{ employees|length }}</h3>
+                <p>总员工数</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ employees|selectattr('role', 'equalto', 'admin')|list|length }}</h3>
+                <p>管理员</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ employees|selectattr('role', 'equalto', 'manager')|list|length }}</h3>
+                <p>经理</p>
+            </div>
+            <div class="stat-card">
+                <h3>{{ employees|selectattr('role', 'equalto', 'user')|list|length }}</h3>
+                <p>普通员工</p>
+            </div>
+        </div>
+
+        <div class="employees-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>员工ID</th>
+                        <th>用户名</th>
+                        <th>角色</th>
+                        <th>部门</th>
+                        <th>邮箱</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.uid }}</td>
+                        <td>{{ employee.username }}</td>
+                        <td>
+                            {% if employee.role == 'admin' %}
+                                <span class="role-badge role-admin">管理员</span>
+                            {% elif employee.role == 'manager' %}
+                                <span class="role-badge role-manager">经理</span>
+                            {% elif employee.role == 'user' %}
+                                <span class="role-badge role-user">员工</span>
+                            {% elif employee.role == 'guest' %}
+                                <span class="role-badge role-guest">访客</span>
+                            {% else %}
+                                <span class="role-badge role-user">{{ employee.role }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ employee.department }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>
+                            <a href="/api/user/{{ employee.uid }}" class="view-btn">查看详情</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

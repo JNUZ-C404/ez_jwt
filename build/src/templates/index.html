@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.2s;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .features {
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .feature {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #dee2e6;
+            color: #555;
+        }
+
+        .feature:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            color: #3498db;
+            margin-right: 0.5rem;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">企业管理系统</div>
+        <h1 style="color: #2c3e50; margin-bottom: 1rem;">企业信息管理系统</h1>
+        <p class="subtitle">安全可靠的企业级信息管理平台<br>集成身份认证与权限管理</p>
+
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">🔐</span>
+                JWT身份认证机制
+            </div>
+            <div class="feature">
+                <span class="feature-icon">👥</span>
+                多角色权限管理
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📊</span>
+                企业数据分析
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🛡️</span>
+                持久化cookie存储
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="/login" class="btn">立即登录</a>
+            <a href="/register" class="btn" style="background: #2ecc71;">注册账户</a>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Enterprise Management System</p>
+        </div>
+    </div>
+</body>
+</html>

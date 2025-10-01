@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 企业管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.6rem;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+        }
+
+        .success {
+            color: #155724;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.6rem;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-help {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <div class="logo">企业管理系统</div>
+            <div class="subtitle">创建您的新账户</div>
+        </div>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="success">
+            {{ success }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/register">
+            <div class="form-group">
+                <label for="username" class="form-label">用户名 *</label>
+                <input type="text" id="username" name="username" class="form-input"
+                       placeholder="请输入用户名" required>
+                <div class="password-help">至少3位字符</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">邮箱地址 *</label>
+                <input type="email" id="email" name="email" class="form-input"
+                       placeholder="请输入邮箱地址" required>
+            </div>
+
+            <div class="form-group">
+                <label for="department" class="form-label">所属部门</label>
+                <select id="department" name="department" class="form-select">
+                    <option value="普通部门">普通部门</option>
+                    <option value="财务部">财务部</option>
+                    <option value="人事部">人事部</option>
+                    <option value="技术部">技术部</option>
+                    <option value="市场部">市场部</option>
+                    <option value="运营部">运营部</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password" class="form-label">密码 *</label>
+                    <input type="password" id="password" name="password" class="form-input"
+                           placeholder="请输入密码" required>
+                    <div class="password-help">至少6位字符</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">确认密码 *</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                           placeholder="请再次输入密码" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">注册账户</button>
+        </form>
+
+        <div class="back-link">
+            <a href="/login">已有账户？点击登录</a>
+            <br><br>
+            <a href="/">← 返回首页</a>
+        </div>
+    </div>
+</body>
+</html>

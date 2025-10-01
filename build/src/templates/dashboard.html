@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业管理系统 - 仪表板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .welcome {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .module {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .module h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .user-list {
+            margin-top: 1rem;
+        }
+
+        .user-item {
+            padding: 0.8rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+        }
+
+        .user-detail {
+            background: #e8f4f8;
+            border: 1px solid #bee5eb;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .user-detail.show {
+            display: block;
+        }
+
+        .detail-row {
+            margin: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flag {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 0.5rem;
+            border-radius: 4px;
+            color: #155724;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .input-group .btn {
+            border-radius: 0 4px 4px 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">企业管理系统</div>
+            <div class="user-info">
+                <span>{{ user.username }} ({{ user.role }})</span>
+                <a href="/logout" class="logout-btn">退出</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome">
+            <h2>欢迎使用企业管理系统</h2>
+            <p>当前登录用户：{{ user.username }} | 权限等级：{{ user.role }}</p>
+        </div>
+
+        {% if sensitive_info %}
+        <div class="welcome" style="background: #d4edda; border-left: 4px solid #28a745;">
+            <h3 style="color: #155724; margin-bottom: 1rem;">🔐 特权信息访问</h3>
+            {% for info in sensitive_info %}
+            <div style="background: white; padding: 0.8rem; margin: 0.5rem 0; border-radius: 4px;">
+                <strong>{{ info.type }}:</strong>
+                <span style="font-family: monospace; color: #155724; font-weight: bold;">{{ info.content }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="modules">
+            <div class="module">
+                <h3>个人中心</h3>
+                <p>查看和编辑个人信息</p>
+                <button class="btn" onclick="viewMyProfile()">查看我的资料</button>
+            </div>
+
+            {% if user.role == 'admin' %}
+            <div class="module">
+                <h3>员工管理</h3>
+                <p>查看所有员工信息（管理员权限）</p>
+                <button class="btn" onclick="viewEmployeeList()">查看员工列表</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function viewMyProfile() {
+            // 从服务器获取当前用户信息，然后跳转到对应的API页面
+            fetch('/api/current-user')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('获取用户信息失败：' + data.error);
+                        return;
+                    }
+                    // 直接跳转到API URL，让URL显示在地址栏中
+                    window.location.href = `/api/user/${data.uid}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('获取用户信息失败');
+                });
+        }
+
+        function viewEmployeeList() {
+            // 跳转到员工列表页面
+            window.location.href = '/employees';
+        }
+    </script>
+</body>
+</html>
